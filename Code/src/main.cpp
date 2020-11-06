@@ -1,5 +1,18 @@
 #include "main.h"
 
+// fill in the pins: for example, #DEFINE PIN 0
+#DEFINE LEFT_FRONT_MOTOR
+#DEFINE RIGHT_FRONT_MOTOR
+#DEFINE LEFT_BACK_MOTOR
+#DEFINE RIGHT_BACK_MOTOR
+#DEFINE MOTOR_MOD 1 // if needed, multiplier on motor inputs
+
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::Motor leftFront(LEFT_FRONT_MOTOR);
+pros::Motor rightFront(RIGHT_FRONT_MOTOR);
+pros::Motor leftBack(LEFT_BACK_MOTOR);
+pros::Motor rightBack(RIGHT_BACK_MOTOR);
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -53,13 +66,17 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
-
-
-
 	while (true) {
+		updateDriveBase();
 		pros::delay(20);
 	}
+}
+
+// updates drive base motors based on controller input
+updateDriveBase()
+{
+	leftFront.move(MOTOR_MOD * master.get_analog(E_CONTROLLER_MASTER_LEFT_Y));
+	leftBack.move(MOTOR_MOD * master.get_analog(E_CONTROLLER_MASTER_LEFT_Y));
+	rightFront.move(MOTOR_MOD * master.get_analog(E_CONTROLLER_MASTER_RIGHT_Y));
+	rightBack.move(MOTOR_MOD * master.get_analog(E_CONTROLLER_MASTER_RIGHT_Y));
 }
